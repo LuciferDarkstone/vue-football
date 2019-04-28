@@ -56,6 +56,26 @@ export const constantRoutes = [
   },
 
   {
+    path: '/school',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'School',
+        component: () => import('@/views/school/index'),
+        meta: { title: '学校管理', icon: 'example' }
+      },
+      {
+        path: 'admin/:id(\\d+)',
+        name: 'Admins',
+        component: () => import('@/views/admins/index'),
+        meta: { title: '管理员', noCache: true, activeMenu: '/school/list' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
