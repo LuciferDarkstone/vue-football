@@ -7,3 +7,19 @@ export function getSchool(params) {
     params
   })
 }
+
+export function addSchool(params) {
+  return request({
+    url: '/school/create',
+    method: 'post',
+    params
+  })
+}
+
+export function updateSchool(params) {
+  return request({
+    url: '/school/update',
+    method: 'post',
+    params
+  })
+}

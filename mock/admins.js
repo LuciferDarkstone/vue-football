@@ -5,7 +5,7 @@ const data = Mock.mock({
     id: '@id',
     avatar: '@name',
     email: '@email',
-    'status|1': ['enable', 'disable', 'deleted']
+    'status|1': ['enable', 'disable']
   }]
 })
 
@@ -20,6 +20,28 @@ export default [
         data: {
           items: items
         }
+      }
+    }
+  },
+
+  {
+    url: '/admins/create',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        data: 'success'
+      }
+    }
+  },
+
+  {
+    url: '/admins/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 20000,
+        data: 'success'
       }
     }
   }
