@@ -3,28 +3,26 @@
 
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-plus" @click="handleCreate">
-        添加学校
+        添加球员
       </el-button>
     </div>
 
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="学校">
+      <el-table-column label="姓名">
         <template slot-scope="scope">
-          <router-link :to="'/school/admin/'+scope.row.id" class="link-type">
-            <span>{{ scope.row.school }}</span>
-          </router-link>
+          <span>{{ scope.row.player }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="学校所在地">
+      <el-table-column align="center" label="位置" width="105">
         <template slot-scope="scope">
-          <span>{{ scope.row.address }}</span>
+          <span>{{ scope.row.position }}</span>
         </template>
       </el-table-column>
 
@@ -36,13 +34,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="249">
+      <el-table-column align="center" label="Actions" width="160">
         <template slot-scope="{row}">
-          <router-link :to="'/school/admin/'+row.id">
-            <el-button type="primary" size="mini" icon="el-icon-search">
-              管理员
-            </el-button>
-          </router-link>
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
@@ -61,11 +54,11 @@
         <el-form-item label="id" prop="id">
           <el-input v-model="temp.id" />
         </el-form-item>
-        <el-form-item label="学校" prop="school">
-          <el-input v-model="temp.school" />
+        <el-form-item label="球员" prop="avatar">
+          <el-input v-model="temp.player" />
         </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address" />
+        <el-form-item label="位置" prop="email">
+          <el-input v-model="temp.position" />
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
@@ -87,10 +80,10 @@
 </template>
 
 <script>
-import { getSchool, addSchool, updateSchool } from '@/api/school'
+import { getPlayer, addPlayer, updatePlayer } from '@/api/player'
 
 export default {
-  name: 'School',
+  name: 'Player',
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -107,8 +100,8 @@ export default {
       statusOptions: ['enable', 'disable'],
       temp: {
         id: undefined,
-        school: '',
-        address: '',
+        player: '',
+        position: '',
         status: ''
       },
       dialogFormVisible: false,
@@ -121,12 +114,13 @@ export default {
     }
   },
   created() {
-    this.getList()
+    const id = this.$route.params && this.$route.params.id
+    this.getList(id)
   },
   methods: {
-    getList() {
+    getList(id) {
       this.listLoading = true
-      getSchool().then(response => {
+      getPlayer(id).then(response => {
         this.list = response.data.items
         this.listLoading = false
       })
@@ -134,8 +128,8 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        school: '',
-        address: '',
+        player: '',
+        position: '',
         status: ''
       }
     },
@@ -151,7 +145,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          addSchool(this.temp).then(() => {
+          addPlayer(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -176,7 +170,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          updateSchool(tempData).then(() => {
+          updatePlayer(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)

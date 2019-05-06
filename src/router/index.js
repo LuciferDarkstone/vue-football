@@ -76,6 +76,26 @@ export const constantRoutes = [
   },
 
   {
+    path: '/team',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'Team',
+        component: () => import('@/views/team/index'),
+        meta: { title: '球队管理', icon: 'example' }
+      },
+      {
+        path: 'player/:id(\\d+)',
+        name: 'Player',
+        component: () => import('@/views/player/index'),
+        meta: { title: '队员信息', noCache: true, activeMenu: '/team/list' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

@@ -3,7 +3,7 @@
 
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-plus" @click="handleCreate">
-        添加学校
+        添加球队
       </el-button>
     </div>
 
@@ -14,17 +14,23 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="学校">
+      <el-table-column align="center" label="队标" width="80">
         <template slot-scope="scope">
-          <router-link :to="'/school/admin/'+scope.row.id" class="link-type">
-            <span>{{ scope.row.school }}</span>
+          <img :src="scope.row.avatar" alt="">
+        </template>
+      </el-table-column>
+
+      <el-table-column label="球队名">
+        <template slot-scope="scope">
+          <router-link :to="'/team/player/'+scope.row.id" class="link-type">
+            <span>{{ scope.row.team }}</span>
           </router-link>
         </template>
       </el-table-column>
 
-      <el-table-column label="学校所在地">
+      <el-table-column label="学校">
         <template slot-scope="scope">
-          <span>{{ scope.row.address }}</span>
+          <span>{{ scope.row.school }}</span>
         </template>
       </el-table-column>
 
@@ -36,11 +42,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="249">
+      <el-table-column align="center" label="Actions" width="259">
         <template slot-scope="{row}">
-          <router-link :to="'/school/admin/'+row.id">
+          <router-link :to="'/team/player/'+row.id">
             <el-button type="primary" size="mini" icon="el-icon-search">
-              管理员
+              查看队员
             </el-button>
           </router-link>
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -61,11 +67,11 @@
         <el-form-item label="id" prop="id">
           <el-input v-model="temp.id" />
         </el-form-item>
+        <el-form-item label="球队" prop="team">
+          <el-input v-model="temp.team" />
+        </el-form-item>
         <el-form-item label="学校" prop="school">
           <el-input v-model="temp.school" />
-        </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address" />
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
@@ -87,10 +93,10 @@
 </template>
 
 <script>
-import { getSchool, addSchool, updateSchool } from '@/api/school'
+import { getTeam, addTeam, updateTeam } from '@/api/team'
 
 export default {
-  name: 'School',
+  name: 'Team',
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -107,8 +113,9 @@ export default {
       statusOptions: ['enable', 'disable'],
       temp: {
         id: undefined,
+        team: '',
         school: '',
-        address: '',
+        avatar: '',
         status: ''
       },
       dialogFormVisible: false,
@@ -126,7 +133,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getSchool().then(response => {
+      getTeam().then(response => {
         this.list = response.data.items
         this.listLoading = false
       })
@@ -134,8 +141,9 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
+        team: '',
         school: '',
-        address: '',
+        avatar: '',
         status: ''
       }
     },
@@ -151,7 +159,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          addSchool(this.temp).then(() => {
+          addTeam(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -176,7 +184,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          updateSchool(tempData).then(() => {
+          updateTeam(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
