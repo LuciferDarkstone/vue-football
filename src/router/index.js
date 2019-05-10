@@ -96,6 +96,26 @@ export const constantRoutes = [
   },
 
   {
+    path: '/league',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'League',
+        component: () => import('@/views/league/index'),
+        meta: { title: '赛事管理', icon: 'dashboard' }
+      },
+      {
+        path: 'schedule/:id(\\d+)',
+        name: 'Schedule',
+        component: () => import('@/views/schedule/index'),
+        meta: { title: '赛程管理', noCache: true, activeMenu: '/league/index' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

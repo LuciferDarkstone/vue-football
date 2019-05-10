@@ -7,6 +7,8 @@ import school from './school'
 import admins from './admins'
 import team from './team'
 import player from './player'
+import league from './league'
+import schedule from './schedule'
 
 const mocks = [
   ...user,
@@ -14,7 +16,9 @@ const mocks = [
   ...school,
   ...admins,
   ...team,
-  ...player
+  ...player,
+  ...league,
+  ...schedule
 ]
 
 // for front mock
