@@ -129,6 +129,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/upload',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Upload',
+        component: () => import('@/views/upload/index'),
+        meta: { title: 'Form', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: 'external-link',
     component: Layout,
     children: [
